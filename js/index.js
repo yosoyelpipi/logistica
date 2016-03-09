@@ -104,7 +104,8 @@ function agregar(){
             var codigoQR=result.text;
             //Introducimos esa variable en el campo 
             //ANDA ESCRIBE RESULTADOS
-			$('#guianumero').html('<input type="hidden" class="form-control" id="CodBarrasLeido" value="'+codigoQR+'">');
+			//$('#guianumero').html('<input type="hidden" class="form-control" id="CodBarrasLeido" value="'+codigoQR+'">');
+			navigator.notification.alert('Elegiste cargar en tu aplicación la siguiente guia de transporte' + codigoQR, alertDismissed, 'Eventos Logistica', 'Aceptar');
 
 			//Llamo nuevamente al léctor de código de barras.
 			//loop(codigoQR);  

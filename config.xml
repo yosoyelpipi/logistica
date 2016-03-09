@@ -69,7 +69,7 @@
   <gap:plugin name="org.apache.cordova.dialogs" version="0.2.10" />
   <gap:plugin name="org.apache.cordova.network-information" version="0.2.12" />
   <gap:plugin name="org.apache.cordova.splashscreen" version="0.3.4" />
-  <gap:plugin name="org.apache.cordova.camera" version="0.3.2" />
+  <plugin name="org.apache.cordova.camera" spec="0.3.6" source="pgb" />
   <gap:plugin name="pushbots-cordova-plugin" source="npm" />
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
