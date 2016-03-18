@@ -111,3 +111,20 @@ h1 {
 #about{
     display: none;
 }
+#ruteo, #conectandonos, #success{
+    display: none;
+}
+
+#testconexion{
+	margin: 0 auto;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+#conection{
+	margin: 0 auto;
+	text-align: center;
+	display: flex;
+	margin-top: 2px;
+	justify-content: center;
+}
