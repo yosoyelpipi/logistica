@@ -187,6 +187,11 @@ function resultGuia(respuesta){
 			
 			$("#GuiaDeTransporte").html('');			
 			for(var x=0; x<respuesta.Detalle.length; x++){
+			
+			var num_com = respuesta.Detalle[x]["FK_ERP_COM_VEN"];
+			var idd_det_com = respuesta.Detalle[x]["IDD"];
+			var orden_det_com = respuesta.Detalle[x]["ORDEN"];	
+				
 			$("#GuiaDeTransporte").append('<tr>' +
 										'<td>' +
 											'<div class="btn-group" role="group">' +
@@ -195,22 +200,23 @@ function resultGuia(respuesta){
 												  '<span class="caret"></span>' +
 												'</button>' +
 												'<ul class="dropdown-menu">' +
-												  '<li><a href="javascript:ItsSetdataa()"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Enviar alerta</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + num_com + '\',0, 1)"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Enviar alerta</a></li>' +
 												  '<li role="separator" class="divider"></li>' +
-												  '<li><a href="#">Entregado</a></li>' +
-												  '<li><a href="#">Devuelto</a></li>' +
-												  '<li><a href="#">Devuelto por cliente</a></li>' +
-												  '<li><a href="#">Entregado parcial</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + num_com + '\', \'' + idd_det_com + '\',2)">Entregado</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + num_com + '\', \'' + idd_det_com + '\',3)">Devuelto</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + num_com + '\', \'' + idd_det_com + '\',4)">Devuelto por cliente</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + num_com + '\', \'' + idd_det_com + '\',6)">Despachado</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + num_com + '\', \'' + idd_det_com + '\',5)">Entregado parcial</a></li>' +
 												'</ul>' +
 											  '</div>' +
 										'</td>' +
-										'<td>'+respuesta.Detalle[x]["FK_ERP_COM_VEN"]+'</td>' +
-										'<td>'+respuesta.Detalle[x]["ORDEN"]+'</td>' +
+										'<td>'+ num_com +'</td>' +
+										'<td>'+ orden_det_com +'</td>' +
 									'</tr>');
 									
-			successOne(respuesta.Detalle[x]["FK_ERP_COM_VEN"], respuesta.Detalle[x]["ORDEN"], respuesta.Detalle[x]["IDD"]);
+			successOne(num_com, orden_det_com, idd_det_com);
 			
-			console.log('Este es el nuevo dato: ' + respuesta.Detalle[x]["IDD"]);						
+			//console.log('Este es el nuevo dato: ' + respuesta.Detalle[x]["IDD"]);						
 						
 			}//Fin del for
 			
@@ -778,7 +784,7 @@ function SendData(id, idd, proceso){
 	var idd;
 	var proceso;
 	//alert(':-)');
-	alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el IDD ' + idd);	
+	//alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el IDD ' + idd);	
 	
 	var server = window.localStorage.getItem('server');
 	var base = window.localStorage.getItem('base');
@@ -790,7 +796,7 @@ function SendData(id, idd, proceso){
 	if(proceso == 1){
 		$.getJSON("http://leocondori.com.ar/app/logistica/www/sendmail.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd}, resultMail, "json");	
 	}else{
-		alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el idd: ' + idd);
+		//alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el idd: ' + idd);
 		$.getJSON("http://leocondori.com.ar/app/logistica/www/modify.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd, accion: proceso}, resultModify, "json");	
 	}
 	/*
