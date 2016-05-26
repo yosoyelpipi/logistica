@@ -160,9 +160,9 @@ $client = new nusoap_client($ws,true);
 				//$headers .= "Bcc: pepe@pepe.com,juan@juan.com\r\n"; 
 
 				if(mail($destinatario,$asunto,$cuerpo,$headers)){
-					echo json_encode(array("ItsLoginResult"=>$ItsGetDataResult, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailDepo));
+					echo json_encode(array("ItsLoginResult"=>$ItsGetDataResult, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailDepo, "NumCom"=>$id));
 				}else{
-					echo json_encode(array("ItsLoginResult"=>1, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailDepo, "Motivo"=>'No se pudo enviar el mail.'));
+					echo json_encode(array("ItsLoginResult"=>1, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailDepo, , "NumCom"=>$id, "Motivo"=>'No se pudo enviar el mail.'));
 				} 
 									}
 								}else{
@@ -199,9 +199,9 @@ include('mail.php');
 				//direcciones que recibirán copia oculta 
 				//$headers .= "Bcc: pepe@pepe.com,juan@juan.com\r\n";
 				if(mail($destinatario,$asunto,$cuerpo,$headers)){
-					echo json_encode(array("ItsLoginResult"=>$ItsGetDataResult, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailFac));
+					echo json_encode(array("ItsLoginResult"=>$ItsGetDataResult, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailFac, "NumCom"=>$id));
 				}else{
-					echo json_encode(array("ItsLoginResult"=>1, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailFac, "Motivo"=>'No se pudo enviar el mail.'));
+					echo json_encode(array("ItsLoginResult"=>1, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailFac,"NumCom"=>$id, "Motivo"=>'No se pudo enviar el mail.'));
 				} 															
 				//echo json_encode(array("ItsLoginResult"=>$ItsGetDataResult, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailFac));
 								}

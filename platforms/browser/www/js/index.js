@@ -755,11 +755,11 @@ $("#GuiaDeTransporte").append('<tr>' +
 												'<ul class="dropdown-menu">' +
 												  '<li><a href="javascript: SendData(\'' + art.id + '\',0, 1)"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Enviar alerta</a></li>' +
 												  '<li role="separator" class="divider"></li>' +
-												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',2)">Entregado</a></li>' +
-												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',3)">Devuelto</a></li>' +
-												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',4)">Devuelto por cliente</a></li>' +
-												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',6)">Despachado</a></li>' +
-												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',5)">Entregado parcial</a></li>' +
+												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',2)">Entregado</a></li>' +
+												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',3)">Devuelto</a></li>' +
+												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',4)">Devuelto por cliente</a></li>' +
+												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',6)">Despachado</a></li>' +
+												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',5)">Entregado parcial</a></li>' +
 												'</ul>' +
 											  '</div>' +
 										'</td>' +
@@ -811,6 +811,10 @@ function resultMail(respuesta){
 				console.log('Si hay error entró acá');
 			}else{
 				alert(respuesta.ItsLoginResult);
+				alert(respuesta.NumCom);
+				$("#LogActividad").append('<li class="list-group-item">Le enviaste mail al cliente cliente ' + respuesta.NumCom + '</li>');
+				$("#success").show();
+				$("#success").hide(4000);
 				/*
 				alert(respuesta.ItsGetDate);
 				alert(respuesta.Cantidad);
