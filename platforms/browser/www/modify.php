@@ -107,23 +107,28 @@ $client = new nusoap_client($ws,true);
                                         
                                         if($accion == 2){
                                             //$ITS->ROWDATA->ROW['ESTADO']="Entregado";
-                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Entregado";    
+                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Entregado";
+                                            $accion = "Entregado";    
                                         }
                                         
                                         if($accion == 3){
-                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Devuelto";    
+                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Devuelto";
+                                            $accion = "Devuelto";    
                                         }
                                         
                                         if($accion == 4){
-                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Devuelto por causa del cliente";    
+                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Devuelto por causa del cliente";
+                                            $accion = "Devuelto por causa del cliente";    
                                         }
                                         
                                         if($accion == 5){
-                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Entregado parcial";    
+                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Entregado parcial";
+                                            $accion = "Entregado parcial";    
                                         }
                                         
                                         if($accion == 6){
-                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Despachado";    
+                                            $ITS->ROWDATA->ROW['Z_ESTADO']="Despachado";
+                                            $accion = "Despachado";    
                                         }
                                         
                                         //E|Entregado|D|Devuelto|C|Devuelto por causa del cliente|S|Despachado|P|Entregado parcial
@@ -154,7 +159,7 @@ $client = new nusoap_client($ws,true);
                                             }else{
                                                 $FinXMLData = $ItsPost['XMLData'];
                                                 //GrabarXML($FinXMLData, 'outFinERP_DET_GUI_TRA_FIN');
-                                                echo json_encode(array("ItsLoginResult"=>$ItsPost['ItsPostResult'], "mensaje"=>'Dato insertado con exito'));
+                                                echo json_encode(array("ItsLoginResult"=>$ItsPost['ItsPostResult'],"Accion"=>$accion, "NumCom"=> $id, "mensaje"=>'Dato insertado con exito'));
                                             }
                                             
                                         }

@@ -162,7 +162,7 @@ $client = new nusoap_client($ws,true);
 				if(mail($destinatario,$asunto,$cuerpo,$headers)){
 					echo json_encode(array("ItsLoginResult"=>$ItsGetDataResult, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailDepo, "NumCom"=>$id));
 				}else{
-					echo json_encode(array("ItsLoginResult"=>1, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailDepo, , "NumCom"=>$id, "Motivo"=>'No se pudo enviar el mail.'));
+					echo json_encode(array("ItsLoginResult"=>1, "ItsGetDate"=>$ItsGetDate, "Email"=>$emailDepo, "NumCom"=>$id, "Motivo"=>'No se pudo enviar el mail.'));
 				} 
 									}
 								}else{
