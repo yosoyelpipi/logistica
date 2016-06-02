@@ -7,7 +7,7 @@
     </feature>
     <allow-intent href="market:*" />
     <name>Logistica</name>
-    <description>Esta aplicación es para el equipo logístco.</description>
+    <description>Esta aplicación es para el equipo logístco. Actualiza los estado de los envíos.</description>
     <author email="soportecliente@iris.com.ar" href="http://phonegap.com">Leo Condorí</author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
@@ -44,6 +44,7 @@
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.vibration" />
     <icon src="icon.png" />
+    <gap:splash src="www/res/screen/android/screen-ldpi-portrait.png" />
     <icon gap:platform="android" gap:qualifier="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
     <icon gap:platform="android" gap:qualifier="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
     <icon gap:platform="android" gap:qualifier="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
