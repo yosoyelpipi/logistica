@@ -14,7 +14,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.
+ * under the License...
  */
 var app = {
     // Application Constructor
@@ -131,7 +131,7 @@ function traerGuia(a){
 
 	var insert = window.localStorage.getItem('insert');
 
-	if(insert==null){
+	if(insert != "true"){
 		var server = window.localStorage.getItem('server');
 		var base = window.localStorage.getItem('base');
 		var user = window.localStorage.getItem('user');
@@ -157,8 +157,9 @@ function traerGuia(a){
 				$.getJSON("http://leocondori.com.ar/app/logistica/www/obtenerguia.php", {ws: server, base:base, usuario:user, pass:pass, guia: a}, resultGuia, "json");		
 			}else{
 				$("#falseprogress").hide();
-				//alert('Tengo que leer la que está guardada en la base de datos.');
+				//alert('..Tengo que leer la que está guardada en la base de datos.');
 				syncPrepare();
+				
 			}		
 		}
 	}
@@ -385,10 +386,10 @@ function sleep(milliseconds) {
 }
 	
 function agregar(){
-    console.log('ejecutaste el bot�n agregar');
+    console.log('ejecutaste el botón agregar');
     //navigator.notification.alert('Ejecutaste el bot�n agregar', alertDismissed, 'Eventos Logistica', 'Aceptar');
 	
-	//Ejecuto el lector de c�digo de barras
+	//Ejecuto el lector de código de barras
     cordova.plugins.barcodeScanner.scan(
         //Si el scaneo del barcode Scanner funciona ejecuta la funci�n result
         function (result) {  
@@ -399,12 +400,12 @@ function agregar(){
 			//$('#guianumero').html('<input type="hidden" class="form-control" id="CodBarrasLeido" value="'+codigoQR+'">');
 			navigator.notification.alert('Elegiste cargar en tu aplicación la siguiente guia de transporte' + codigoQR, alertDismissed, 'Eventos Logistica', 'Aceptar');
 			traerGuia(codigoQR);
-			//Llamo nuevamente al l�ctor de c�digo de barras.
+			//Llamo nuevamente al lector de código de barras.
 			//loop(codigoQR);  
         }, 
-        //Si no, ejecuta la funci�n error.
+        //Si no, ejecuta la función error.
         function (error) {
-            notificacion("Ha ocurrido un error al escanear.");
+            navigator.notification.alert("Ha ocurrido un error al escanear.");
         }
     );
 }
@@ -645,7 +646,7 @@ navigator.notification.prompt(
 //Base de datos
 function creaDB(){
 	db = window.openDatabase("ERPITRISLOG2", "1.0", "Guia de Transporte", 200000);
-	db.transaction(creaNuevaDB, errorDB, crearSuccess);
+	db.transaction(creaNuevaDB, errorDBA, crearSuccess);
 	}
 
 function creaNuevaDB(tx){
@@ -655,11 +656,18 @@ function creaNuevaDB(tx){
 
 	//Creo la tabla ERP_EMPRESAS
 	tx.executeSql('DROP TABLE IF EXISTS erp_gui_tra');
-	var empresas = "CREATE TABLE IF NOT EXISTS erp_gui_tra ( " +
+	var ErpGuiTra = "CREATE TABLE IF NOT EXISTS erp_gui_tra ( " +
 		  		   "id VARCHAR(50) PRIMARY KEY, " +
 		           "entero VARCHAR(10), " +
 				   "orden VARCHAR(13) )";			   
-	tx.executeSql(empresas);
+	tx.executeSql(ErpGuiTra);
+	
+	tx.executeSql('DROP TABLE IF EXISTS erp_notas');
+	var erp_notas = "CREATE TABLE IF NOT EXISTS erp_notas ( " +
+		  		   "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		           "NUM_COM VARCHAR(15), " +
+				   "DESCRIPCION VARCHAR(250) )";			   
+	tx.executeSql(erp_notas);	
 }
 
 function crearSuccess(){
@@ -668,16 +676,24 @@ function crearSuccess(){
 	window.localStorage.setItem("existe_db", 1);
 }
 
-function errorDB(err){
-	console.log("Error procesando SQL:" + err.message);
-	navigator.notification.alert("Existio un error a nivel SQL: " + err.message, alertDismissed, 'Logistica', 'Ok');
+function errorDBA(err){
+	console.log("Error procesando SQL: -> " + err.message);
+	navigator.notification.alert("Existio un error a nivel SQL:-> " + err.message, alertDismissed, 'Logistica', 'Ok');
 }
 
 
+function errorDB(err){
+	console.log("syncPrepare() dice que: Error procesando SQL: -> " + err.message);
+	navigator.notification.alert("syncPrepare() dice que: Existio un error a nivel SQL:-> " + err.message, alertDismissed, 'Logistica', 'Ok');
+}
+
 // process the confirmation dialog result
 function onConfirm(buttonIndex) {
+	window.localStorage.setItem('insert','false');
+	
     //alert('You selected button ' + buttonIndex);
 	if(buttonIndex==1){
+		window.localStorage.setItem("existe_db","null");
 		//Ejecuto la funci�n para depurar la tabla y crearla de nuevo.
 		creaDB();
 		volverAbout();
@@ -755,16 +771,16 @@ $("#GuiaDeTransporte").append('<tr>' +
 												'<ul class="dropdown-menu">' +
 												  '<li><a href="javascript: SendData(\'' + art.id + '\',0, 1)"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Enviar alerta</a></li>' +
 												  '<li role="separator" class="divider"></li>' +
-												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',2)">Entregado</a></li>' +
-												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',3)">Devuelto</a></li>' +
-												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',4)">Devuelto por cliente</a></li>' +
-												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',6)">Despachado</a></li>' +
-												  '<li id=""' + art.id + '"><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',5)">Entregado parcial</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',2)">Entregado</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',3)">Devuelto</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',4)">Devuelto por cliente</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',6)">Despachado</a></li>' +
+												  '<li><a href="javascript: SendData(\'' + art.id + '\', \'' + art.entero + '\',5)">Entregado parcial</a></li>' +
 												'</ul>' +
 											  '</div>' +
 										'</td>' +
-										'<td>'+ art.id +'</td>' +
-										'<td>'+ art.orden +'</td>' +
+										'<td>' + art.id + ' <p id="'+ art.id +'"></p></td>' +
+										'<td>' + art.orden + '</td>' +
 									'</tr>');
 									
 													
@@ -775,11 +791,17 @@ $("#GuiaDeTransporte").append('<tr>' +
 			
 			//Ahora te llevo a la sección RUTA con un delay de 1 segundo
 			//setTimeout(function(){ verRuta(); }, 1000);
-			verRuta();			
+			LeerNotas();
+			verRuta();
+			
+						
 	}//Cierro el else	
 }//Fin de la función syncArtSuccess
 
 function SendData(id, idd, proceso){
+	
+	jsShowWindowLoad('Cambiando estado...espere por favor...');
+	
 	var id;
 	var idd;
 	var proceso;
@@ -794,16 +816,30 @@ function SendData(id, idd, proceso){
 	
 	//Valido, si el proceso es 1 entonces debo mandar mail.
 	if(proceso == 1){
-		alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el idd: ' + idd);
-		$.getJSON("http://leocondori.com.ar/app/logistica/www/sendmail.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd}, resultMail, "json");	
+		//alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el idd: ' + idd);
+		var resultado = validateConnection();
+		if (resultado == 0 || resultado == 3 || resultado == 4){
+		  $.getJSON("http://leocondori.com.ar/app/logistica/www/sendmail.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd}, resultMail, "json");	
+		}else{
+		  alert('Lo sentimos pero parece que tus dispositivo perdió la conexion a datos óptima para comenzar con la transferencia de datos. No podemos continuar.');	
+		}
+			
 	}else{
-		alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el idd: ' + idd);
-		$.getJSON("http://leocondori.com.ar/app/logistica/www/modify.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd, accion: proceso}, resultModify, "json");	
+		var resultado = validateConnection();
+		//alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el idd: ' + idd);
+		if (resultado == 0 || resultado == 3 || resultado == 4){	
+		  $.getJSON("http://leocondori.com.ar/app/logistica/www/modify.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd, accion: proceso}, resultModify, "json");		
+		}else{
+		  alert('Lo sentimos pero parece que tus dispositivo perdió la conexion a datos óptima para comenzar con la transferencia de datos. No podemos continuar.');	
+		}
+		
+		
 	}				
 }
 
 
 function resultMail(respuesta){
+	        jsRemoveWindowLoad();
 			$("#falseprogress").hide();
 	
 			if(respuesta.ItsLoginResult == 1){			
@@ -811,11 +847,25 @@ function resultMail(respuesta){
 				$("#progress").fadeOut(6000);
 				console.log('Si hay error entró acá');
 			}else{
-				alert(respuesta.ItsLoginResult);
-				alert(respuesta.NumCom);
-				$("#LogActividad").append('<li class="list-group-item"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Le enviaste mail al cliente cliente ' + respuesta.NumCom + '</li>');
-				$("#success").show();
-				$("#success").hide(4000);
+				//alert(respuesta.ItsLoginResult);
+				//alert(respuesta.NumCom);
+				$("#LogActividad").append('<li class="list-group-item"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Le enviaste <b>mail</b> al cliente <b>' + respuesta.NumCom + '</b></li>');
+				//$("#success").show();
+				document.getElementById(respuesta.NumCom).innerHTML+='<br><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>'; 
+				AddNota(respuesta.NumCom, 'Le enviaste mail al cliente cliente ' + respuesta.NumCom + '');
+/*				
+var jsonObj = [{'Id':'1','Username':'Ray','FatherName':'Thompson'},  
+               {'Id':'2','Username':'Steve','FatherName':'Johnson'},
+               {'Id':'3','Username':'Albert','FatherName':'Einstein'}]
+
+
+for (var i=0; i<jsonObj.length; i++) {
+  if (jsonObj[i].Id == 3) {
+    jsonObj[i].Username = "Thomas";
+    break;
+  }
+}		   
+*/				
 				/*
 				alert(respuesta.ItsGetDate);
 				alert(respuesta.Cantidad);
@@ -833,12 +883,169 @@ function resultMail(respuesta){
 	}
 	
 function resultModify(respuesta){
-		
+	jsRemoveWindowLoad();	
 	if(respuesta.ItsLoginResult != 0){
 		alert('Error resultModify : ' + respuesta.motivo);
 	}else{
-		alert('resultModify ok : ' + respuesta.mensaje);
-		$("#LogActividad").append('<li class="list-group-item"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Le cambiaste el estado al comprobante ' + respuesta.NumCom + ' ahora tiene el estado ' + respuesta.Accion + '</li>');
+		//alert('resultModify ok : ' + respuesta.mensaje);
+		$("#LogActividad").append('<li class="list-group-item"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Le cambiaste el estado al comprobante <b>' + respuesta.NumCom + '</b> ahora tiene el estado <b>' + respuesta.Accion + '</b></li>');
+		//$('"#'+respuesta.NumCom+'"').html('<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + respuesta.Accion);
+		document.getElementById(respuesta.NumCom).innerHTML+='<br><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <small><b>' + respuesta.Accion + '</b></small>'; 
+		AddNota(respuesta.NumCom,'Le cambiaste el estado al comprobante ' + respuesta.NumCom + ' ahora tiene el estado ' + respuesta.Accion + '');
 	}
 	
-}	
+}
+
+
+//Insertar una nota
+function AddNota(num_com, nota){
+var num_com;
+var nota;
+InsertNota();
+
+	function InsertNota(){
+		var  db = window.openDatabase("ERPITRISLOG2", "1.0", "Guia de Transporte", 200000);
+		db.transaction(insertar, errorDBNota);
+	}
+
+	function insertar(tx){
+
+		tx.executeSql('insert into erp_notas (NUM_COM, DESCRIPCION) values ("' + num_com + '", "' + nota + '") ', [], syncNoteSuccess, errorDBNota);
+	}
+
+	function syncNoteSuccess(tx, results){
+		console.log("Nota insertada con total éxito.");
+	    //navigator.notification.alert("Nota insertada con total éxito.");
+	}
+
+	function errorDBNota(err){
+		console.log("Error procesando SQL al querer ingresar la nota: " + err.message);
+		navigator.notification.alert("Error procesando SQL al querer ingresar la nota: " + err.message);
+	}
+
+}//Fin AddNota
+
+//Leer todas las notas
+	function LeerNotas(){
+		console.log('ejecuté LeerNotas');
+		var  dbg = window.openDatabase("ERPITRISLOG2", "1.0", "Guia de Transporte", 200000);
+		dbg.transaction(select, errorDBNotaOpenDB);
+	}
+	
+	function errorDBNotaOpenDB(err){
+		console.log("Error procesando SQL al querer leer las notas: " + err.message);
+		navigator.notification.alert("Error procesando SQL al querer leer las notas: " + err.message);
+	}	
+
+	function select(tx){
+        console.log('ejecuté select(tx)');      
+		tx.executeSql('select * from erp_notas order by ID asc', [], AppendNoteSuccess, errorAppendDBNota);
+	}
+
+	function AppendNoteSuccess(tx, results){
+		if(results.rows.length == 0){
+			console.log("La tabla erp_notas está vacía.");
+			$("#LogActividad").html('No hay actividad registrada.');
+		}else{
+			console.log('Hay resultados');
+			$("#LogActividad").html('');
+			var contenido =[];		
+			for(var i=0; i<results.rows.length; i++){
+					var note = results.rows.item(i);
+					
+					contenido[i]=(note.NUM_COM, note.DESCRIPCION);
+
+					var mail = note.DESCRIPCION.search("mail");
+					if(mail != "-1"){
+					  document.getElementById(note.NUM_COM).innerHTML+='<br><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>'; 	
+					}
+
+					var Entregado = note.DESCRIPCION.search("Entregado");
+					if(Entregado != "-1"){
+					  document.getElementById(note.NUM_COM).innerHTML+='<br><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <small><b>Entregado</b></small>';	
+					}					
+					
+					var Devuelto = note.DESCRIPCION.search("Devuelto");
+					if(Devuelto != "-1"){
+					  document.getElementById(note.NUM_COM).innerHTML+='<br><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <small><b>Devuelto</b></small>';	
+					}
+
+					var DevueltoPorCli = note.DESCRIPCION.search("Devuelto por causa del cliente");
+					if(DevueltoPorCli != "-1"){
+					  document.getElementById(note.NUM_COM).innerHTML+='<br><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <small><b>Devuelto por causa del cliente</b></small>';	
+					}					
+
+					var EntregadoPar = note.DESCRIPCION.search("Entregado parcial");
+					if(EntregadoPar != "-1"){
+					  document.getElementById(note.NUM_COM).innerHTML+='<br><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <small><b>Entregado parcial</b></small>';	
+					}
+
+					var Despachado = note.DESCRIPCION.search("Despachado");
+					if(Despachado != "-1"){
+					  document.getElementById(note.NUM_COM).innerHTML+='<br><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <small><b>Despachado</b></small>';	
+					}
+					
+					$("#LogActividad").append('<li class="list-group-item"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + note.DESCRIPCION + '</li>');
+			}			
+		}
+	}
+
+	function errorAppendDBNota(err){
+		console.log("Error procesando SQL al querer leer todas la nota: " + err.message);
+		navigator.notification.alert("Error procesando SQL al querer agregar todas la nota: " + err.message);
+	}
+
+
+function jsRemoveWindowLoad() {
+	// eliminamos el div que bloquea pantalla
+    $("#WindowLoad").remove();
+
+}
+
+function jsShowWindowLoad(mensaje) {
+	//eliminamos si existe un div ya bloqueando
+    jsRemoveWindowLoad();
+   
+    //si no enviamos mensaje se pondra este por defecto
+    if (mensaje === undefined) mensaje = "Procesando la información<br>Espere por favor";
+   
+    //centrar imagen gif
+    height = 20;//El div del titulo, para que se vea mas arriba (H)
+    var ancho = 0;
+    var alto = 0;
+	
+	//obtenemos el ancho y alto de la ventana de nuestro navegador, compatible con todos los navegadores
+    if (window.innerWidth == undefined) ancho = window.screen.width;
+    else ancho = window.innerWidth;
+    if (window.innerHeight == undefined) alto = window.screen.height;
+    else alto = window.innerHeight;
+    
+	//operación necesaria para centrar el div que muestra el mensaje
+    var heightdivsito = alto/2 - parseInt(height)/2;//Se utiliza en el margen superior, para centrar
+	
+   //imagen que aparece mientras nuestro div es mostrado y da apariencia de cargando
+    imgCentro = "<div style='text-align:center;height:" + alto + "px;'><div  style='color:#000;margin-top:" + heightdivsito + "px; font-size:20px;font-weight:bold'>" + mensaje + "</div><img  src='img/load.gif'></div>";
+
+        //creamos el div que bloquea grande------------------------------------------
+        div = document.createElement("div");
+        div.id = "WindowLoad"
+        div.style.width = ancho + "px";
+        div.style.height = alto + "px";
+        $("body").append(div);
+
+        //creamos un input text para que el foco se plasme en este y el usuario no pueda escribir en nada de atras
+        input = document.createElement("input");
+        input.id = "focusInput";
+        input.type = "text"
+
+		//asignamos el div que bloquea
+        $("#WindowLoad").append(input);
+        
+		//asignamos el foco y ocultamos el input text 
+        $("#focusInput").focus();
+        $("#focusInput").hide();
+		
+		//centramos el div del texto
+        $("#WindowLoad").html(imgCentro);
+
+}
