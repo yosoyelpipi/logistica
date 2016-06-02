@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.itris.logistica" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Logistica</name>
-    <description>Esta aplicación es para el equipo logístco.</description>
+    <description>Esta aplicación es para el equipo logístco. Actualiza los estado de los envíos.</description>
     <author email="soportecliente@iris.com.ar" href="http://phonegap.com">Leo Condorí</author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
