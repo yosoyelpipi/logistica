@@ -211,10 +211,10 @@ function resultGuia(respuesta){
 												'</ul>' +
 											  '</div>' +
 										'</td>' +
-										'<td>'+ num_com +'</td>' +
+										'<td>' + num_com  + ' <p id="'+ num_com  +'"></p></td>' +
 										'<td>'+ orden_det_com +'</td>' +
 									'</tr>');
-									
+
 			successOne(num_com, orden_det_com, idd_det_com);
 			
 			//console.log('Este es el nuevo dato: ' + respuesta.Detalle[x]["IDD"]);						
@@ -883,7 +883,8 @@ for (var i=0; i<jsonObj.length; i++) {
 	}
 	
 function resultModify(respuesta){
-	jsRemoveWindowLoad();	
+	jsRemoveWindowLoad();
+	geoLocaliza();	
 	if(respuesta.ItsLoginResult != 0){
 		alert('Error resultModify : ' + respuesta.motivo);
 	}else{
@@ -945,7 +946,8 @@ InsertNota();
 	function AppendNoteSuccess(tx, results){
 		if(results.rows.length == 0){
 			console.log("La tabla erp_notas está vacía.");
-			$("#LogActividad").html('No hay actividad registrada.');
+			//$("#LogActividad").html('No hay actividad registrada.');
+			window.notification.alert('No hay activadad registrada de manera local.');
 		}else{
 			console.log('Hay resultados');
 			$("#LogActividad").html('');
@@ -1049,3 +1051,29 @@ function jsShowWindowLoad(mensaje) {
         $("#WindowLoad").html(imgCentro);
 
 }
+
+// onSuccess Callback
+//   This method accepts a `Position` object, which contains
+//   the current GPS coordinates
+//
+var onSuccess = function(position) {
+    alert('Latitude: '          + position.coords.latitude          + '\n' +
+          'Longitude: '         + position.coords.longitude         + '\n' +
+          'Altitude: '          + position.coords.altitude          + '\n' +
+          'Accuracy: '          + position.coords.accuracy          + '\n' +
+          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+          'Heading: '           + position.coords.heading           + '\n' +
+          'Speed: '             + position.coords.speed             + '\n' +
+          'Timestamp: '         + position.timestamp                + '\n');
+};
+
+// onError Callback receives a PositionError object
+//
+function onError(error) {
+    alert('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
+}
+function geoLocaliza(){
+	navigator.geolocation.getCurrentPosition(onSuccess, onError);	
+}
+
