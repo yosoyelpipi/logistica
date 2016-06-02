@@ -30,6 +30,8 @@ $user = $_GET["usuario"];
 $pass = $_GET["pass"];
 $id = $_GET["guia"];
 $idd = $_GET["idd"];
+$lat = $_GET["lat"];
+$lon = $_GET["lon"];
 $fua='';
 
 

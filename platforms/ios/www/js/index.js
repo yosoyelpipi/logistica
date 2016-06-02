@@ -819,7 +819,14 @@ function SendData(id, idd, proceso){
 		//alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el idd: ' + idd);
 		var resultado = validateConnection();
 		if (resultado == 0 || resultado == 3 || resultado == 4){
-		  $.getJSON("http://leocondori.com.ar/app/logistica/www/sendmail.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd}, resultMail, "json");	
+		  geoLocaliza();
+		  var lat = window.localStorage.getItem("lat");
+		  var lon = window.localStorage.getItem("lon");	
+		  
+		  alert(lat);
+		  alert(lon);
+			
+		  $.getJSON("http://leocondori.com.ar/app/logistica/www/sendmail.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd, lat: lat, lon: lon}, resultMail, "json");	
 		}else{
 		  alert('Lo sentimos pero parece que tus dispositivo perdió la conexion a datos óptima para comenzar con la transferencia de datos. No podemos continuar.');	
 		}
@@ -1057,14 +1064,17 @@ function jsShowWindowLoad(mensaje) {
 //   the current GPS coordinates
 //
 var onSuccess = function(position) {
-    alert('Latitude: '          + position.coords.latitude          + '\n' +
-          'Longitude: '         + position.coords.longitude         + '\n' +
-          'Altitude: '          + position.coords.altitude          + '\n' +
-          'Accuracy: '          + position.coords.accuracy          + '\n' +
-          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-          'Heading: '           + position.coords.heading           + '\n' +
-          'Speed: '             + position.coords.speed             + '\n' +
-          'Timestamp: '         + position.timestamp                + '\n');
+	window.localStorage.setItem("lat",position.coords.latitude);
+	window.localStorage.setItem("lon",position.coords.longitude);
+    /*alert('Latitude: '          + position.coords.latitude          + '\n' +
+          'Longitude: '         + position.coords.longitude         + '\n' );*/
+		  
+          //'Altitude: '          + position.coords.altitude          + '\n' +
+          //'Accuracy: '          + position.coords.accuracy          + '\n' +
+          //'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+          //'Heading: '           + position.coords.heading           + '\n' +
+          //'Speed: '             + position.coords.speed             + '\n' +
+          //'Timestamp: '         + position.timestamp                + '\n');
 };
 
 // onError Callback receives a PositionError object
