@@ -98,7 +98,7 @@ function versiExite(a){
         $('#wifi').html('WIFI');
 		$('#mix').html('MIX');
 		$('#3g-4g').html('<b>3G/4G</b>');
-		navigator.notification.alert("Podes experimentar perdidas de datos o lentitud si tu dispositivo no cuenta con una conexion estable. Te recomendamos que uses Wi-Fi.", alertDismissed, 'Logistica 1.0', 'Aceptar');		
+		navigator.notification.alert("Podes experimentar perdidas de datos o lentitud si tu dispositivo no cuenta con una conexion estable. Te recomendamos que uses Wi-Fi.", alertDismissed, 'iTracking', 'Aceptar');		
 	});
 	$('#mix').on('click', function () {
 		console.log('mix');
@@ -142,7 +142,7 @@ function traerGuia(a){
 		navigator.notification.confirm(
 			'Ya tenés una guía de transporte cargada. Si volvés a cargar una nueva vas a perder todos los datos relacionados ¿Querés agregar una nueva?', // message
 			onConfirma,            // callback to invoke with index of button pressed
-			'Logistica',           // title
+			'iTracking',           // title
 			['Cargar nueva','Ver la guía guardada']         // buttonLabels
 		);	
 
@@ -277,10 +277,10 @@ function resultGuia(respuesta){
 			if (respuesta.valor == 1){
 				$("#conectandonos").hide();				   
 				//alert('Conexi�n creada con �xito.');
-				navigator.notification.alert('Conexion creada con exito', alertDismissed, 'Eventos Logistica', 'Aceptar');
+				navigator.notification.alert('Conexion creada con exito', alertDismissed, 'Eventos iTracking', 'Aceptar');
 			}else{
 				$("#conectandonos").hide();
-				navigator.notification.alert('No se puede acceder a la ruta seleccionada ', alertDismissed, 'Eventos Logistica', 'Aceptar');
+				navigator.notification.alert('No se puede acceder a la ruta seleccionada ', alertDismissed, 'Eventos iTracking', 'Aceptar');
 			}
 		}
 
@@ -299,11 +299,11 @@ function resultGuia(respuesta){
         if (Response.ItsLoginResult == 1){
             $("#conectandonos").hide();				   
             //alert('Error : ' + Response.motivo);
-			navigator.notification.alert(Response.motivo, alertDismissed, 'Eventos Logistica', 'Aceptar');
+			navigator.notification.alert(Response.motivo, alertDismissed, 'Eventos iTracking', 'Aceptar');
         }else{
             $("#conectandonos").hide();
             //alert('Login realizado con �xito: ' + Response.session);
-			navigator.notification.alert(Response.session, alertDismissed, 'Eventos Logistica', 'Aceptar');
+			navigator.notification.alert(Response.session, alertDismissed, 'Eventos iTracking', 'Aceptar');
         }
     }		
 
@@ -342,9 +342,9 @@ function validateConnection(){
 function checkwifi(){
 	var resultado = validateConnection();
 		if(resultado == 0){	
-			navigator.notification.alert('Genial, estas conectado a una red WiFi', alertDismissed, 'Eventos Logistica', 'Aceptar');
+			navigator.notification.alert('Genial, estas conectado a una red WiFi', alertDismissed, 'Eventos iTracking', 'Aceptar');
 		}else{			
-			navigator.notification.alert('No estas conecado a ninguna red wi-fi. No vas a poder cargar guias de transporte ni modificar los estados de envio', alertDismissed, 'Eventos Logistica', 'Aceptar');
+			navigator.notification.alert('No estas conecado a ninguna red wi-fi. No vas a poder cargar guias de transporte ni modificar los estados de envio', alertDismissed, 'Eventos iTracking', 'Aceptar');
 		}
 }
 
@@ -361,7 +361,7 @@ function onBackKeyDown(){
             navigator.notification.confirm(
             '¿Estas seguro que queres salir de la aplicacion?',  // message
             onConfirm, // callback
-            'Logistica 1.0:', // title
+            'iTracking', // title
             ['Si, salir', 'Cancelar'] // buttonName
 			);
 		}
@@ -398,7 +398,7 @@ function agregar(){
             //Introducimos esa variable en el campo 
             //ANDA ESCRIBE RESULTADOS
 			//$('#guianumero').html('<input type="hidden" class="form-control" id="CodBarrasLeido" value="'+codigoQR+'">');
-			navigator.notification.alert('Elegiste cargar en tu aplicación la siguiente guia de transporte' + codigoQR, alertDismissed, 'Eventos Logistica', 'Aceptar');
+			navigator.notification.alert('Elegiste cargar en tu aplicación la siguiente guia de transporte' + codigoQR, alertDismissed, 'Eventos iTracking', 'Aceptar');
 			traerGuia(codigoQR);
 			//Llamo nuevamente al lector de código de barras.
 			//loop(codigoQR);  
@@ -415,7 +415,7 @@ function agregar(){
 				navigator.notification.confirm(
 				'Estas seguro que queres borrar las datos de conexion?',  // message
 				onConfirmCleaner, // callback
-				'Logistica 1.0:', // title
+				'iTracking', // title
 				['Si, borrar', 'Cancelar'] // buttonName
 				);	
 	}
@@ -428,7 +428,7 @@ function agregar(){
 			window.localStorage.setItem("base","");
 			window.localStorage.setItem("user","");
 			window.localStorage.setItem("pass","");
-			navigator.notification.alert("Actualizamos con exito los datos de conexion", alertDismissed, 'Logistica 1.0', 'Aceptar');
+			navigator.notification.alert("Actualizamos con exito los datos de conexion", alertDismissed, 'iTracking', 'Aceptar');
 			location.reload();
 			}
     }
@@ -619,7 +619,7 @@ function submitForm(){
 													'<span id="inputSuccess4Status" class="sr-only">(success)</span>'+
 												'</div>');
 						window.localStorage.setItem("pass", _pass);
-						navigator.notification.alert("Actualizamos con exito los datos de conexion", alertDismissed, 'Logistica 1.0', 'Aceptar');
+						navigator.notification.alert("Actualizamos con exito los datos de conexion", alertDismissed, 'iTracking', 'Aceptar');
 						location.reload();
 					}
 
@@ -678,13 +678,13 @@ function crearSuccess(){
 
 function errorDBA(err){
 	console.log("Error procesando SQL: -> " + err.message);
-	navigator.notification.alert("Existio un error a nivel SQL:-> " + err.message, alertDismissed, 'Logistica', 'Ok');
+	navigator.notification.alert("Existio un error a nivel SQL:-> " + err.message, alertDismissed, 'iTracking', 'Ok');
 }
 
 
 function errorDB(err){
 	console.log("syncPrepare() dice que: Error procesando SQL: -> " + err.message);
-	navigator.notification.alert("syncPrepare() dice que: Existio un error a nivel SQL:-> " + err.message, alertDismissed, 'Logistica', 'Ok');
+	navigator.notification.alert("syncPrepare() dice que: Existio un error a nivel SQL:-> " + err.message, alertDismissed, 'iTracking', 'Ok');
 }
 
 // process the confirmation dialog result
@@ -749,7 +749,7 @@ function syncArtSuccess(tx, results){
 	console.log("Recibidos de la base de datos erp_gui_tra " + results.rows.length + " registros");
 	if(results.rows.length == 0){
 		console.log("La tabla erp_gui_tra está vacía.");
-		navigator.notification.alert("No hay guía de transporte guardada.", alertDismissed, 'Logistica', 'ok');
+		navigator.notification.alert("No hay guía de transporte guardada.", alertDismissed, 'iTracking', 'ok');
 	}else{
 	$("#GuiaDeTransporte").html('');		
 		var contenido =[];
