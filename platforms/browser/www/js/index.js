@@ -819,12 +819,13 @@ function SendData(id, idd, proceso){
 		//alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el idd: ' + idd);
 		var resultado = validateConnection();
 		if (resultado == 0 || resultado == 3 || resultado == 4){
-		  geoLocaliza();
-		  var lat = window.localStorage.getItem("lat");
-		  var lon = window.localStorage.getItem("lon");	
+		 var opa = geoLocaliza();
+		 alert(opa);
+		 var lat = window.localStorage.getItem("lat");
+		 var lon = window.localStorage.getItem("lon");	
 		  
-		  alert(lat);
-		  alert(lon);
+		  //alert(lat);
+		  //alert(lon);
 			
 		  $.getJSON("http://leocondori.com.ar/app/logistica/www/sendmail.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd, lat: lat, lon: lon}, resultMail, "json");	
 		}else{
@@ -1064,8 +1065,10 @@ function jsShowWindowLoad(mensaje) {
 //   the current GPS coordinates
 //
 var onSuccess = function(position) {
-	window.localStorage.setItem("lat",position.coords.latitude);
-	window.localStorage.setItem("lon",position.coords.longitude);
+	
+	return position.coords.latitude+ ','+position.coords.longitude;
+	//window.localStorage.setItem("lat",position.coords.latitude);
+	//window.localStorage.setItem("lon",position.coords.longitude);
     /*alert('Latitude: '          + position.coords.latitude          + '\n' +
           'Longitude: '         + position.coords.longitude         + '\n' );*/
 		  
