@@ -398,7 +398,7 @@ function agregar(){
             //Introducimos esa variable en el campo 
             //ANDA ESCRIBE RESULTADOS
 			//$('#guianumero').html('<input type="hidden" class="form-control" id="CodBarrasLeido" value="'+codigoQR+'">');
-			navigator.notification.alert('Elegiste cargar en tu aplicación la siguiente guia de transporte' + codigoQR, alertDismissed, 'Eventos iTracking', 'Aceptar');
+			navigator.notification.alert('Elegiste cargar en tu aplicación la siguiente guia de transporte ' + codigoQR, alertDismissed, 'Eventos iTracking', 'Aceptar');
 			traerGuia(codigoQR);
 			//Llamo nuevamente al lector de código de barras.
 			//loop(codigoQR);  
@@ -819,13 +819,10 @@ function SendData(id, idd, proceso){
 		//alert('Enviar correo a este ID ' + id + ' para realizar este proceso ' + proceso + ' y este es el idd: ' + idd);
 		var resultado = validateConnection();
 		if (resultado == 0 || resultado == 3 || resultado == 4){
-		 var opa = geoLocaliza();
-		 alert(opa);
+		 geoLocaliza();
+		 
 		 var lat = window.localStorage.getItem("lat");
-		 var lon = window.localStorage.getItem("lon");	
-		  
-		  //alert(lat);
-		  //alert(lon);
+		 var lon = window.localStorage.getItem("lon");
 			
 		  $.getJSON("http://leocondori.com.ar/app/logistica/www/sendmail.php", {ws: server, base:base, usuario:user, pass:pass, guia: id, idd: idd, lat: lat, lon: lon}, resultMail, "json");	
 		}else{

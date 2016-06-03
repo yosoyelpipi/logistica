@@ -15,7 +15,7 @@
         <param name="ios-package" value="CDVGestureHandler" />
         <param name="onload" value="true" />
     </feature>
-    <name>Logistica</name>
+    <name>iTracking</name>
     <description>Esta aplicación es para el equipo logístco. Actualiza los estado de los envíos.</description>
     <author email="soportecliente@iris.com.ar" href="http://phonegap.com">Leo Condorí</author>
     <content src="index.html" />
