@@ -130,6 +130,7 @@ function traerGuia(a){
 	$("#falseprogress").show();	
 
 	var insert = window.localStorage.getItem('insert');
+	//alert('Mirá esto dice la APP que tenés' + insert);
 
 	if(insert != "true"){
 		var server = window.localStorage.getItem('server');
@@ -215,6 +216,7 @@ function resultGuia(respuesta){
 										'<td>'+ orden_det_com +'</td>' +
 									'</tr>');
 
+			window.localStorage.setItem('insert', 'true');
 			successOne(num_com, orden_det_com, idd_det_com);
 			
 			//console.log('Este es el nuevo dato: ' + respuesta.Detalle[x]["IDD"]);						
@@ -408,6 +410,25 @@ function agregar(){
             navigator.notification.alert("Ha ocurrido un error al escanear.");
         }
     );
+}
+
+
+function agregarManual(){
+		function onPrompt(results) {
+			//alert("You selected button number " + results.buttonIndex + " and entered " + results.input1);
+			if(results.buttonIndex == 1 && results.input1 != ''){
+				//alert('acepto y agrego algo' + results.buttonIndex +' y agregó esto: ' +results.input1 );
+				traerGuia(results.input1);
+			}
+		}
+
+		navigator.notification.prompt(
+			'Ingresá el ID de la guía de transporte',  // message
+			onPrompt,                  // callback to invoke
+			'Traer Guía',            // title
+			['Buscar','Cancelar'],             // buttonLabels
+			'TRA 080100000002'                 // defaultText
+		);
 }
 
 	function cleaner(){

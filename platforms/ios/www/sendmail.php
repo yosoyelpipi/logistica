@@ -23,7 +23,7 @@ date_default_timezone_set("America/Argentina/Buenos_Aires");
 $ItsGetDate = date("Y/m/d H:i:s");
 require_once('lib/nusoap.php');
 
-
+/*
 $ws = $_GET["ws"];
 $bd = $_GET["base"];
 $user = $_GET["usuario"];
@@ -33,11 +33,11 @@ $idd = $_GET["idd"];
 $lat = $_GET["lat"];
 $lon = $_GET["lon"];
 $fua='';
-
+*/
 
 //GrabarTXT($fua,'FEC_ULT_ACT');
 
-/*
+
 $ws = "http://itris.no-ip.com:3000/ITSWS/ItsCliSvrWS.asmx?WSDL";
 $bd = "TOMA_INVENTARIO";
 $user = "lcondori";
@@ -46,8 +46,11 @@ $fua = '';
 //Este no tiene mail $id='DFBA000100010209';
 //$id='DFBA000100010209';
 $id = 'DFB 000100000101';
+$idd = '3333';
+$lat = '000';
+$lon = '000';
 //EXISTE MAIL PARA ESTE $id = 'DFB 000100000101';
-*/
+
 
 $client = new nusoap_client($ws,true);
 	$sError = $client->getError();
